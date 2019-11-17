@@ -290,6 +290,25 @@ public:
 		}
 	}
 
+	void addPrato(vector<Prat> *Pratos){
+		string nometmp = " ";
+		string precotmp = " ";
+		string qnttmp = " ";
+		cout << "Qual nome do prato para registra?:\n";
+		cin >> nometmp;
+
+		cout << "Qual o preço do prato?\n";
+		cin >> precotmp;
+
+		qnttmp = "0";
+
+		if(nometmp != " " && precotmp != " " && qnttmp != " ")
+		{
+			Prat tmp{nometmp, precotmp, qnttmp};
+			Pratos->push_back(tmp);
+		}
+	}
+
 	//função que indica qual tipo de funcionario entrou no sistema para abrir a interface pro certo:
 };
 
@@ -321,11 +340,16 @@ int main(){
 
 	//funcionando ooooooooooooooooooooooo:
 	//achar o funcionario:
-	for(int i= 0 ; i < Gerentes.size(); ++i)
+
+	//var auxiliar:
+	int decGerente = 0;
+	int decGarcom = 0;
+
+	for(int i= 0; i < Gerentes.size(); ++i)
 	{
 		if(Gerentes[i].Ridger() == ID_Funcionario)
 		{
-			cout << "achou gerente!!!\n";
+			decGerente = 1;	
 		}
 	}
 
@@ -333,12 +357,48 @@ int main(){
 	{
 		if(Garcons[i].Ridgar() == ID_Funcionario)
 		{
-			cout << "BORBOLETINHA TA NA COZINHA CARALHO\n";
+			decGarcom = 1;
 		}
 	}
 
 
-	
-	
+	//int para decisão do que fazer se Gerente:
+	int Dec = 0;
+	if(decGerente = 1){
+		cout << "Para: \n1 - adicionar prato;\n2 - remover prato;\n3 - adicionar garcom;\n4 - remover garcom;\n";
+		cout << "5 - mostrar hitorico diario;\n6 - salvar alterações\n7 - Sair;";
+		cin >> Dec;
+		if(Dec == 1)
+		{
+			//add função para adicionar prato;
+			//para pratos precisamos de nome, preco e qnt:
+			a.addPrato(&Pratos);
+
+		}
+		else if (Dec == 2)
+		{
+			//add função para remover um prato;
+		}
+		else if (Dec == 3)
+		{
+			//add função para adicionar garcom;
+		}
+		else if(Dec == 4)
+		{
+			//add função para remover garcom;
+		}
+		else if(Dec == 5)
+		{
+			//add mostrar historico;
+		}
+		else if(Dec == 6)
+		{
+
+		}
+		else if(Dec == 7)
+		{
+
+		}
+	}
 }
 
