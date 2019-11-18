@@ -2,59 +2,14 @@
 #include <string>
 #include <vector>
 #include <fstream>
-//#include <>
+#include "funcionario.hpp"
+#include "gerente.hpp"
+#include "prat.hpp"
+#include "garcom.hpp"
 
 using namespace std;
 
 
-class Fun{
-private:
-	string nome;
-	string cpf;
-	
-public:
-	
-	Fun(string nome, string cpf){
-		this->nome = nome;
-		this->cpf = cpf;
-	}
-
-	string Rnome() { return nome; };
-	string Rcpf() { return cpf; };
-};
-
-
-class Ger : public Fun{
-private:
-	string salarioGer;
-
-public:
-	string id;
-	Ger(string nome, string cpf, string id, string salGer) : Fun{nome,cpf} {
-		this->id = id;
-		this->salarioGer = salGer;
-	}
-
-	string Rsalarioger() { return salarioGer; };
-	string Ridger() { return id; };
-};
-
-class Gar : public Fun{
-private:
-public:
-	string id;
-	string salarioGar;
-
-	Gar(string nome, string cpf, string id, string salGar) : Fun{nome,cpf} {
-		this->id = id;
-		this->salarioGar = salGar; 
-	}
-
-	string Rsalariogar(){ return salarioGar; };
-	string Ridgar(){return id; };
-};
-
- 
 class Prat{
 private:
 	string nome;
@@ -74,7 +29,100 @@ public:
 	string Rqnt() { return qnt; };
 };
 
-/*class Hist{
+
+class Funcionario{
+private:
+	string nome;
+	string cpf;
+	
+public:
+	
+	Funcionario(string nome, string cpf){
+		this->nome = nome;
+		this->cpf = cpf;
+	}
+
+	string Rnome() { return nome; };
+	string Rcpf() { return cpf; };
+};
+
+class Garcom: public Funcionario{
+private:
+	string id;
+	string salarioGar;
+
+public:
+	Garcom(string nome, string cpf, string id, string salGar) : Funcionario{nome,cpf} {
+		this->id = id;
+		this->salarioGar = salGar; 
+	}
+
+	string Rsalariogar(){ return salarioGar; };
+	string Ridgar(){return id; };
+};
+
+
+class Gerente : public Funcionario{
+private:
+	string salarioGer;
+
+public:
+	string id;
+	Gerente(string nome, string cpf, string id, string salGer) : Funcionario{nome,cpf} {
+		this->id = id;
+		this->salarioGer = salGer;
+	}
+
+	string Rsalarioger() { return salarioGer; };
+	string Ridger() { return id; };
+
+	void addPrato(vector<Prat> *Pratos){
+		string nometmp = " ";
+		string precotmp = " ";
+		string qnttmp = " ";
+		cout << "Qual nome do prato para registra?:\n";
+		cin >> nometmp;
+
+		cout << "Qual o preço do prato?\n";
+		cin >> precotmp;
+
+		qnttmp = "0";
+
+		if(nometmp != " " && precotmp != " " && qnttmp != " ")
+		{
+			Prat tmp{nometmp, precotmp, qnttmp};
+			Pratos->push_back(tmp);
+		}
+	}	
+
+	void RemoverPrato(vector<Prat> *Pratos, int escolha)
+	{
+		Pratos->erase(Pratos->begin() + escolha);
+	}
+
+	void addGarcom(vector<Garcom> *Garcons){
+		string nomeGartmp = " ";
+		string cpfGartmp  = " ";
+		string idGartmp = " ";
+		cout << "Qual nome do Garcom para registra?:\n";
+		cin >> nomeGartmp;
+
+		cout << "Qual o cpf?\n";
+		cin >> cpfGartmp;
+
+		cout << "Qual ID o garcom vai receber?\n";
+		cin >> idGartmp;
+
+		if(nomeGartmp != " " && cpfGartmp != " " && idGartmp != " ")
+		{
+			Garcom tmp{nomeGartmp, cpfGartmp, idGartmp, "900"};
+			Garcons->push_back(tmp);
+		}
+	}
+};
+
+
+class Hist{
 private:
 public:
 	Hist(vector<Ped> pedi, ofstream histD)
@@ -102,7 +150,7 @@ public:
 		//mostra quais os itens dispostos a venda;
 	}
 };
-*/
+
 
 
 class Res{
@@ -176,7 +224,7 @@ public:
 		pratos.close();		
 	}
 
-	void InGer(vector<Ger> *vetorGerentes){
+	void InGer(vector<Gerente> *vetorGerentes){
 		//tipo ifstream para abrir arquivo de Gerente:
 		ifstream gerente;
 		//string e vector de string p/ auxiliar para ajudar na extração dos componenetes do arquivo:
@@ -227,13 +275,13 @@ public:
 
 			if(nomeGer != " " && cpfGer != " " &&  idGer != " " && salarioGer != " ")
 			{
-				Ger tmp{nomeGer, cpfGer, idGer, salarioGer};
+				Gerente tmp{nomeGer, cpfGer, idGer, salarioGer};
 				vetorGerentes->push_back(tmp);
 			}
 		}
 	}
 
-	void InGar(vector<Gar> *vetorGarcons){
+	void InGar(vector<Garcom> *vetorGarcons){
 			//tipo ifstream para abrir arquivo de Gerente:
 		ifstream garcom;
 		//string e vector de string p/ auxiliar para ajudar na extração dos componenetes do arquivo:
@@ -284,40 +332,48 @@ public:
 
 			if(nomeGar != " " && cpfGar != " " &&  idGar != " " && salarioGar != " ")
 			{
-				Gar tmp{nomeGar, cpfGar, idGar, salarioGar};
+				Garcom tmp{nomeGar, cpfGar, idGar, salarioGar};
 				vetorGarcons->push_back(tmp);
 			}
 		}
 	}
 
-	void addPrato(vector<Prat> *Pratos){
-		string nometmp = " ";
-		string precotmp = " ";
-		string qnttmp = " ";
-		cout << "Qual nome do prato para registra?:\n";
-		cin >> nometmp;
+/*
+	void salvaralt(vector<Ger> &Gerentes, vector<Gar> &Garcons, vector<Prat> &Pratos)
+	{
 
-		cout << "Qual o preço do prato?\n";
-		cin >> precotmp;
+		ofstream pratoss;
+		ofstream gerentess;
+		ofstream garconss;
 
-		qnttmp = "0";
-
-		if(nometmp != " " && precotmp != " " && qnttmp != " ")
+		//testando a abertura dos arquivos:
+		pratoss.open("pratos.txt");
+		if(!pratoss.is_open())
 		{
-			Prat tmp{nometmp, precotmp, qnttmp};
-			Pratos->push_back(tmp);
+			cout << "ERRO NA ABERTURA DE DOS PRATOS PARA SALVAR\n";
+		}
+
+		gerentess.open("pratos.txt");
+		if(!gerentess.is_open())
+		{
+			cout << "ERRO NA ABERTURA DE DOS GERENTES PARA SALVAR\n";
+		}
+
+		garconss.open("pratos.txt");
+		if(!garconss.is_open())
+		{
+			cout << "ERRO NA ABERTURA DE DOS GARCONS PARA SALVAR\n";
 		}
 	}
-
-	//função que indica qual tipo de funcionario entrou no sistema para abrir a interface pro certo:
+	*/
 };
 
 
 int main(){
 	//containers necessário para inicializar as informações do restaurante:
 	vector<Prat> Pratos;
-	vector<Ger> Gerentes;
-	vector<Gar> Garcons;
+	vector<Gerente> Gerentes;
+	vector<Garcom> Garcons;
 
 	//Inicializando um restaurante:
 	Res a{"ComeuMorreu"};
@@ -342,62 +398,93 @@ int main(){
 	//achar o funcionario:
 
 	//var auxiliar:
+	int gerr = 0;
+	int garr = 0;
 	int decGerente = 0;
 	int decGarcom = 0;
 
-	for(int i= 0; i < Gerentes.size(); ++i)
+	for(gerr; gerr < Gerentes.size(); ++gerr)
 	{
-		if(Gerentes[i].Ridger() == ID_Funcionario)
+		if(Gerentes[gerr].Ridger() == ID_Funcionario)
 		{
 			decGerente = 1;	
+			break;
 		}
 	}
 
-	for(int i = 0 ; i < Garcons.size(); ++i)
+	/*for(garr ; garr < Garcons.size(); ++garr)
 	{
-		if(Garcons[i].Ridgar() == ID_Funcionario)
+		if(Garcons[garr].Ridgar() == ID_Funcionario)
 		{
 			decGarcom = 1;
+			break;
 		}
 	}
-
+*/
 
 	//int para decisão do que fazer se Gerente:
 	int Dec = 0;
-	if(decGerente = 1){
+	if(decGerente == 1){
 		cout << "Para: \n1 - adicionar prato;\n2 - remover prato;\n3 - adicionar garcom;\n4 - remover garcom;\n";
-		cout << "5 - mostrar hitorico diario;\n6 - salvar alterações\n7 - Sair;";
+		cout << "5 - mostrar hitorico diario;\n6 - salvar alterações\n7 - Sair;\n";
 		cin >> Dec;
-		if(Dec == 1)
+		
+		while(Dec != 7)
 		{
-			//add função para adicionar prato;
-			//para pratos precisamos de nome, preco e qnt:
-			a.addPrato(&Pratos);
+			if(Dec == 0)
+			{
+				cout << "Deseja fazer algo mais?: \n";
+				cout << "1 - adicionar prato;\n2 - remover prato;\n3 - adicionar garcom;\n4 - remover garcom;\n";
+				cout << "5 - mostrar hitorico diario;\n6 - salvar alterações;\n7 - Sair;\n";
+				cin >> Dec;
+			}
+			if(Dec == 1)
+			{
+				//add função para adicionar prato;
+				//para pratos precisamos de nome, preco e qnt:
+				Gerentes[garr].addPrato(&Pratos);
+				Dec = 0;
+			}
+			else if (Dec == 2)
+			{
+				//add função para remover um prato;
+				//mostrandos os pratos disponiveis 
+				for(int i = 0; i < Pratos.size(); ++i)
+				{
+					cout << i << " - " << Pratos[i].Rnome() << endl;
+				}
+				
+				int escolha;
+				cout << "Qual pratos deseja excluir?\n";
+				cin >> escolha;
 
-		}
-		else if (Dec == 2)
-		{
-			//add função para remover um prato;
-		}
-		else if (Dec == 3)
-		{
-			//add função para adicionar garcom;
-		}
-		else if(Dec == 4)
-		{
-			//add função para remover garcom;
-		}
-		else if(Dec == 5)
-		{
-			//add mostrar historico;
-		}
-		else if(Dec == 6)
-		{
+				Gerentes[garr].RemoverPrato(&Pratos, escolha);
+				
+				//Para interatividade no Menu o Dec recebe valor 0; 
+				Dec = 0;
+			}
+			else if (Dec == 3)
+			{
+				//add função para adicionar garcom;
+				Gerentes[garr].addGarcom(&Garcons);
+				Dec = 0;
+			}
+			else if(Dec == 4)
+			{
+				//add função para remover garcom;
+			}
+			else if(Dec == 5)
+			{
+				//add mostrar historico;
+			}
+			else if(Dec == 6)
+			{
 
-		}
-		else if(Dec == 7)
-		{
+			}
+			else if(Dec == 7)
+			{
 
+			}
 		}
 	}
 }
